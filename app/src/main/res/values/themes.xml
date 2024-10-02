@@ -1,0 +1,13 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.ProjetoPH" parent="Theme.Material3.DayNight.NoActionBar">
+    </style>
+    <style name="Theme.temaPh" parent="Theme.Material3.DayNight.NoActionBar">
+
+        <item name="colorPrimary">@color/cinzaClaro</item>
+        <item name="colorSecondary">@color/azulEscuro</item>
+        <item name="colorAccent">@color/verdeLimao</item>
+        <item name="android:statusBarColor">@color/azulEscuro</item>
+
+    </style>
+</resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Para transmitir confiança e estabilidade.-->
+    <color name="azulEscuro">#1E3A8A</color>
+    <!--Para dar uma sensação de energia e vitalidade.-->
+    <color name="verdeLimao">#10B981</color>
+    <!--Para um fundo neutro e limpo.-->
+    <color name="cinzaClaro">#F3F4F6</color>
+    <!--Para manter a interface clara e fácil de ler.-->
+    <color name="branco">#FFFFFFFF</color>
+    <!--Para destacar botões e chamadas para ação.-->
+    <color name="laranja">#F97316</color>
+</resources>
