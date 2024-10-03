@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/branco"
+    android:backgroundTint="@color/branco"
     tools:layout_editor_absoluteX="1dp"
     tools:layout_editor_absoluteY="510dp">
 
@@ -54,6 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:background="@color/azulEscuro"
+                android:backgroundTint="@color/azulEscuro"
                 android:text="Colleman Trainer"
                 android:textAlignment="center"
                 android:textColor="@color/branco"
@@ -98,7 +100,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:backgroundTint="@color/laranja"
-                android:text="Button"
+                android:onClick="cadastrar"
+                android:text="Cadastrar"
                 android:textColor="@color/branco"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

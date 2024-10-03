@@ -6,8 +6,11 @@
 
         <item name="colorPrimary">@color/cinzaClaro</item>
         <item name="colorSecondary">@color/azulEscuro</item>
-        <item name="colorAccent">@color/verdeLimao</item>
+        <item name="colorAccent">@color/laranja</item>
         <item name="android:statusBarColor">@color/azulEscuro</item>
+        <item name="android:backgroundTint">@color/branco</item>
+        <item name="colorOnBackground">@color/branco</item>
+        <item name="colorButtonNormal">@color/laranja</item>
 
     </style>
 </resources>
