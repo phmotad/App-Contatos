@@ -49,9 +49,15 @@ public class MainActivity extends AppCompatActivity {
         return editEmail.getText().toString().contains("@");
     }
     public void cadastrar(View view){
-        if (verificaCampos())
-            if(verificaSenha())
-                if(verificarEmail())
+        if(verificaCampos()){
+            if(verificaSenha()){
+                if (verificarEmail()) {
                     Toast.makeText(this, "Cadastro efetuado com sucesso!", Toast.LENGTH_SHORT).show();
+                }
+                else Toast.makeText(this, "Preencha um E-mail válido!", Toast.LENGTH_SHORT).show();
+            }
+            else Toast.makeText(this, "A senha deve conter mais de 6 caracteres!", Toast.LENGTH_SHORT).show();
+        }
+        else Toast.makeText(this, "Preencha um nome válido!", Toast.LENGTH_SHORT).show();
     }
 }
