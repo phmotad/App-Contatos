@@ -13,13 +13,21 @@
         android:theme="@style/Theme.temaPh"
         tools:targetApi="31">
         <activity
-            android:name=".activity.MainActivity"
-            android:exported="true">
+            android:name=".model.LoginActivity"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.MainActivity"
+            android:exported="true">
+        </activity>
+        <activity android:name=".model.CadastroActivity"
+            android:exported="true">
+
         </activity>
     </application>
 

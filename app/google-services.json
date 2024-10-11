@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "355653510810",
+    "project_id": "cadastroapp-742a2",
+    "storage_bucket": "cadastroapp-742a2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:355653510810:android:85e64d16334514bf252123",
+        "android_client_info": {
+          "package_name": "br.com.victall.projetoph"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6dPo-u-EKkSw66NZTqAviUDGshQqtCH8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
