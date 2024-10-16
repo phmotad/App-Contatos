@@ -55,7 +55,7 @@
                 android:layout_marginTop="15dp"
                 android:background="@color/azulEscuro"
                 android:backgroundTint="@color/azulEscuro"
-                android:text="Colleman Trainer"
+                android:text="Lista de tarefas"
                 android:textAlignment="center"
                 android:textColor="@color/branco"
                 android:textSize="40sp"

@@ -10,6 +10,18 @@
     tools:layout_editor_absoluteY="510dp">
 
 
+    <Button
+        android:id="@+id/btnAdicionarNovo"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="20dp"
+        android:backgroundTint="@color/azulEscuro"
+        android:drawableBottom="@drawable/baseline_add_24"
+        android:elevation="4dp"
+        android:onClick="adicionaTarefa"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -27,12 +39,12 @@
             android:id="@+id/pagPrincipal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Página principal"
-            android:textColor="@color/branco"
-            android:textStyle="bold"
-            android:textSize="20dp"
-            android:layout_marginLeft="30dp"
+            android:layout_marginLeft="10dp"
             android:fontFamily="sans-serif"
+            android:text="Quadros Kanban"
+            android:textColor="@color/branco"
+            android:textSize="20dp"
+            android:textStyle="bold"
             tools:layout_editor_absoluteX="16dp"
             tools:layout_editor_absoluteY="22dp" />
 
@@ -49,6 +61,14 @@
         app:layout_constraintBottom_toBottomOf="@+id/toolbar"
         app:layout_constraintEnd_toEndOf="@+id/toolbar"
         app:srcCompat="@drawable/baseline_logout_24" />
+
+    <ListView
+        android:id="@+id/lstTarefas"
+        android:layout_width="409dp"
+        android:layout_height="400dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
