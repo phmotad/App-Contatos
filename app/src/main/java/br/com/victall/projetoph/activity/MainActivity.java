@@ -2,6 +2,8 @@ package br.com.victall.projetoph.activity;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.icu.lang.UCharacterEnums;
@@ -26,13 +28,15 @@ import java.util.List;
 
 import br.com.victall.projetoph.R;
 import br.com.victall.projetoph.model.ConfiguracaoFirebase;
+import br.com.victall.projetoph.model.Contato;
+import br.com.victall.projetoph.model.ContatoAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
     private ImageView btnPagPrincipal;
-    private List<String> listaTarefas;
-    private ListView lstTarefas;
-    private ArrayAdapter<String> adapter;
+    private ArrayList<Contato> listaTarefas;
+    private RecyclerView recyclerView;
+    private ContatoAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +44,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         btnPagPrincipal = findViewById(R.id.btnPagPrincipal);
-        lstTarefas = findViewById(R.id.lstTarefas);
+        recyclerView = findViewById(R.id.lstTarefas);
         listaTarefas = new ArrayList<>();
-        adapter = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,listaTarefas);
-        lstTarefas.setAdapter(adapter);
+        adapter = new ContatoAdapter(listaTarefas,this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
     }
         public void adicionaTarefa(View view){
 
@@ -64,8 +69,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 //Ação do clique do botão salvar
+                Contato contato = new Contato();
+                contato.setNome(edtTarefa.getText().toString());
                 String novaTarefa = edtTarefa.getText().toString(); //Comando para pegar o texto digitado pelo usuario
-                listaTarefas.add(novaTarefa); //Adiciona na lista
+                listaTarefas.add(contato); //Adiciona na lista
                 adapter.notifyDataSetChanged(); //Comando para atualizar a lista
                 alertDialog.dismiss(); //Comando para fechar o Dialog
             }

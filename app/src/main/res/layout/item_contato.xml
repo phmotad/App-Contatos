@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_height="100dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/imgPerfil"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/banner_blog_1_scaled_jpg"
+        android:layout_marginLeft="20dp"
+        android:layout_weight="2"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtNomeContato"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:text="Ronnie Coleman"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:textColor="@color/azulEscuro" />
+
+        <TextView
+            android:id="@+id/txtFoneContato"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="+55 38 8888-8888"
+            android:textColor="@color/azulEscuro"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtEmailContato"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="coleman@gmail.com"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:textColor="@color/verdeLimao" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imgFavoriteContato"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="2.4"
+        android:layout_marginRight="20dp"
+        app:srcCompat="@drawable/baseline_favorite_border_24" />
+
+
+</LinearLayout>

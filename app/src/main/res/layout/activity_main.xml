@@ -62,7 +62,7 @@
         app:layout_constraintEnd_toEndOf="@+id/toolbar"
         app:srcCompat="@drawable/baseline_logout_24" />
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/lstTarefas"
         android:layout_width="409dp"
         android:layout_height="400dp"
