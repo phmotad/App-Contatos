@@ -6,6 +6,15 @@ public class Contato {
     private String email;
     private boolean favorito;
     private String fotoPath;
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getNome() {
         return nome;

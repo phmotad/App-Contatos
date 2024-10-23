@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import br.com.victall.projetoph.R;
+import br.com.victall.projetoph.activity.MainActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -26,6 +27,15 @@ public class LoginActivity extends AppCompatActivity {
         editEmail = findViewById(R.id.editTextTextEmailAddress2);
         editsenha = findViewById(R.id.editTextTextPassword2);
         btnLogin = findViewById(R.id.btnEntrar);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(ConfiguracaoFirebase.estaLogado()){
+            startActivity(new Intent(this, MainActivity.class));
+        }
     }
 
     private boolean verificaCampos(){

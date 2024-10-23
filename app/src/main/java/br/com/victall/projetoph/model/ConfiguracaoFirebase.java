@@ -78,4 +78,30 @@ public class ConfiguracaoFirebase {
         FirebaseAuth.getInstance().signOut();
         context.startActivity(new Intent(context,LoginActivity.class));
     }
+
+    public static boolean estaLogado(){
+        return FirebaseAuth.getInstance().getCurrentUser()!=null;
+    }
+
+    public static void salvarContato(Contato contato, Context context) {
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        String id = databaseReference.child("contatos").push().getKey();
+        contato.setId(id);
+
+        if(id==null)
+            return;
+
+        databaseReference.child("contatos").child(id).setValue(contato)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(context, "Contato salvo com sucesso!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+
+    }
 }
