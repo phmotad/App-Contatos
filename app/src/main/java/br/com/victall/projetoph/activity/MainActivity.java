@@ -1,5 +1,6 @@
 package br.com.victall.projetoph.activity;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +18,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -79,9 +85,6 @@ public class MainActivity extends AppCompatActivity {
                 contato.setNome(edtNomeDialog.getText().toString());
                 contato.setEmail(edtEmailDialog.getText().toString());
                 contato.setTelefone(edtTelefoneDialog.getText().toString());
-                contato.setFotoPath(pathTemp);
-                listaTarefas.add(contato); //Adiciona na lista
-                adapter.notifyDataSetChanged(); //Comando para atualizar a lista
                 alertDialog.dismiss(); //Comando para fechar o Dialog
                 ConfiguracaoFirebase.salvarContato(contato, MainActivity.this,uriTemp);
             }
@@ -140,6 +143,42 @@ public class MainActivity extends AppCompatActivity {
         return mypath.getAbsolutePath();
     }
 
+    private void recuperaContatos(){
+
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+
+        firebaseDatabase.getReference().child("contatos").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                listaTarefas = new ArrayList<>();
+
+                if(snapshot.exists()){
+                    for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                        Contato contato = dataSnapshot.getValue(Contato.class);
+                        listaTarefas.add(contato);
+                    }
+
+                    adapter = new ContatoAdapter(listaTarefas,MainActivity.this);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+                    recyclerView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        recuperaContatos();
+    }
 
     public void deslogar(View view){
         ConfiguracaoFirebase.deslogar(this);

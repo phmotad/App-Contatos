@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.StartupTime;
 import com.google.firebase.auth.AuthResult;
@@ -18,6 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import br.com.victall.projetoph.activity.MainActivity;
 
@@ -86,7 +88,7 @@ public class ConfiguracaoFirebase {
         return FirebaseAuth.getInstance().getCurrentUser()!=null;
     }
 
-    public static void salvarContato(Contato contato, Context context, Uri uri) {
+    public static void salvarContato(Contato contato, Context context, Uri uri){
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         String id = databaseReference.child("contatos").push().getKey();
@@ -95,76 +97,44 @@ public class ConfiguracaoFirebase {
         if(id==null)
             return;
 
-        databaseReference.child("contatos").child(id).setValue(contato)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
+        final StorageReference fotoPerfilRef = FirebaseStorage.getInstance().getReference().child("fotos");
+
+        //Fazer Upload do Arquivo
+        UploadTask uploadTask = fotoPerfilRef.putFile(uri);
+
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                fotoPerfilRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(context, "Contato salvo com sucesso!", Toast.LENGTH_SHORT).show();
-                        }
+                    public void onSuccess(Uri uri) {
+
+                        String urlConvertida = uri.toString();
+                        contato.setFotoPath(urlConvertida);
+
+
+                        databaseReference.child("contatos").child(id).setValue(contato)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful()){
+                                            Toast.makeText(context, "Contato salvo com sucesso!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+
+
                     }
                 });
-
-
-        public static void salvarContato(Contato contato, Context context, Uri uri){
-
-
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-            String id = databaseReference.child("contatos").push().getKey();
-            contato.setId(id);
-
-
-            if(id==null)
-                return;
-
-
-            final StorageReference fotoPerfilRef = FirebaseStorage.getInstance().getReference().child("fotos");
-
-
-            //Fazer Upload do Arquivo
-            UploadTask uploadTask = fotoPerfilRef.putFile(uri);
-
-
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-
-                    fotoPerfilRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-
-
-                            String urlConvertida = uri.toString();
-                            contato.setFotoPath(urlConvertida);
-
-
-                            databaseReference.child("contatos").child(id).setValue(contato)
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if(task.isSuccessful()){
-                                                Toast.makeText(context, "Contato salvo com sucesso!", Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-                                    });
-
-
-                        }
-                    });
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.i("ërrrr",e.getMessage());
-                }
-            });
-
-
-        }
-
-
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+            }
+        });
 
 
     }
+
 }

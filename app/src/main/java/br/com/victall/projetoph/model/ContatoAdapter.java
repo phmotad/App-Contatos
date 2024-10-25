@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 import br.com.victall.projetoph.R;
@@ -42,10 +44,14 @@ public class ContatoAdapter extends RecyclerView.Adapter<ContatoAdapter.ViewHold
         holder.txtTelefone.setText(contato.getTelefone());
         holder.txtNome.setText(contato.getNome());
 
-//        if(contato.isFavorito())
-//            holder.imgFavorito.setImageResource(R.drawable.baseline_favorite_24);
-//        else
-//            holder.imgFavorito.setImageResource(R.drawable.baseline_favorite_border_24);
+        if(!contato.getFotoPath().isEmpty()){
+            Glide.with(context).load(contato.getFotoPath()).into(holder.imgPerfil).onLoadFailed(context.getResources().getDrawable(R.drawable.baseline_image_24));
+        }
+
+        if(contato.isFavorito())
+            holder.imgFavorito.setImageResource(R.drawable.baseline_favorite_24);
+        else
+            holder.imgFavorito.setImageResource(R.drawable.baseline_favorite_border_24);
 
     }
 
@@ -68,6 +74,8 @@ public class ContatoAdapter extends RecyclerView.Adapter<ContatoAdapter.ViewHold
             txtNome = itemView.findViewById(R.id.txtNomeContato);
             txtTelefone = itemView.findViewById(R.id.txtFoneContato);
             txtEmail = itemView.findViewById(R.id.txtEmailContato);
+            imgPerfil = itemView.findViewById(R.id.imgPerfil);
+            imgFavorito = itemView.findViewById(R.id.imgFavoriteContato);
         }
     }
 }
