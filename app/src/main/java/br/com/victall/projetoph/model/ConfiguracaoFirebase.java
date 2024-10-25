@@ -2,6 +2,7 @@ package br.com.victall.projetoph.model;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import br.com.victall.projetoph.activity.MainActivity;
 
@@ -83,7 +86,7 @@ public class ConfiguracaoFirebase {
         return FirebaseAuth.getInstance().getCurrentUser()!=null;
     }
 
-    public static void salvarContato(Contato contato, Context context) {
+    public static void salvarContato(Contato contato, Context context, Uri uri) {
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         String id = databaseReference.child("contatos").push().getKey();
@@ -101,6 +104,66 @@ public class ConfiguracaoFirebase {
                         }
                     }
                 });
+
+
+        public static void salvarContato(Contato contato, Context context, Uri uri){
+
+
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+            String id = databaseReference.child("contatos").push().getKey();
+            contato.setId(id);
+
+
+            if(id==null)
+                return;
+
+
+            final StorageReference fotoPerfilRef = FirebaseStorage.getInstance().getReference().child("fotos");
+
+
+            //Fazer Upload do Arquivo
+            UploadTask uploadTask = fotoPerfilRef.putFile(uri);
+
+
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+
+                    fotoPerfilRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+
+
+                            String urlConvertida = uri.toString();
+                            contato.setFotoPath(urlConvertida);
+
+
+                            databaseReference.child("contatos").child(id).setValue(contato)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+                                                Toast.makeText(context, "Contato salvo com sucesso!", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+
+
+                        }
+                    });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.i("ërrrr",e.getMessage());
+                }
+            });
+
+
+        }
+
+
 
 
     }
