@@ -19,6 +19,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.github.rtoshiro.util.format.SimpleMaskFormatter;
+import com.github.rtoshiro.util.format.text.MaskTextWatcher;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -34,7 +36,7 @@ import br.com.victall.projetoph.model.ConfiguracaoFirebase;
 import br.com.victall.projetoph.model.Contato;
 import br.com.victall.projetoph.model.ContatoAdapter;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ContatoAdapter.OnClickListener {
 
     private ImageView btnPagPrincipal;
     private ImageView imgSelected;
@@ -53,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         btnPagPrincipal = findViewById(R.id.btnPagPrincipal);
         recyclerView = findViewById(R.id.lstTarefas);
         listaTarefas = new ArrayList<>();
-        adapter = new ContatoAdapter(listaTarefas,this);
+        adapter = new ContatoAdapter(listaTarefas,this, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
     }
@@ -66,6 +68,12 @@ public class MainActivity extends AppCompatActivity {
         EditText edtTelefoneDialog = dialogView.findViewById(R.id.edtTelefoneDialog);
         Button btnSalvarTarefa = dialogView.findViewById(R.id.btnSalvarTarefa);
         ImageView imgSelecionaFoto = dialogView.findViewById(R.id.imgSelecionaFoto);
+
+
+        //Criando Máscara do Campo de Telefone
+        SimpleMaskFormatter smf = new SimpleMaskFormatter("(NN)NNNNN-NNNN");  // cria o formato desejado
+        MaskTextWatcher mtw = new MaskTextWatcher(edtTelefoneDialog, smf);  // insere o formato no campo a ser preenchido
+        edtTelefoneDialog.addTextChangedListener(mtw);  // seta o formato no campo texto
 
         //Criando um Alertadialog com base na view criada
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -159,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
                         listaTarefas.add(contato);
                     }
 
-                    adapter = new ContatoAdapter(listaTarefas,MainActivity.this);
+                    adapter = new ContatoAdapter(listaTarefas,MainActivity.this, MainActivity.this);
                     recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
                     recyclerView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
@@ -179,8 +187,13 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         recuperaContatos();
     }
-
     public void deslogar(View view){
         ConfiguracaoFirebase.deslogar(this);
+    }
+
+    @Override
+    public void OnClick(int posicao, boolean isFavorite) {
+        listaTarefas.get(posicao).setFavorito(isFavorite);
+
     }
 }

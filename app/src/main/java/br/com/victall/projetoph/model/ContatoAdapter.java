@@ -21,10 +21,12 @@ public class ContatoAdapter extends RecyclerView.Adapter<ContatoAdapter.ViewHold
 
     private ArrayList<Contato> contatoList;
     private Context context;
+    private OnClickListener listener;
 
-    public ContatoAdapter(ArrayList<Contato> contatoList, Context context) {
+    public ContatoAdapter(ArrayList<Contato> contatoList, Context context, OnClickListener listener) {
         this.contatoList = contatoList;
         this.context = context;
+        this.listener = listener;
     }
 
     @NonNull
@@ -35,6 +37,10 @@ public class ContatoAdapter extends RecyclerView.Adapter<ContatoAdapter.ViewHold
         return new ViewHolder(view);
     }
 
+    public interface OnClickListener{
+        void OnClick( int posicao,boolean isFavorite);
+    }
+
     @Override
     public void onBindViewHolder(@NonNull ContatoAdapter.ViewHolder holder, int position) {
 
@@ -43,6 +49,15 @@ public class ContatoAdapter extends RecyclerView.Adapter<ContatoAdapter.ViewHold
         holder.txtEmail.setText(contato.getEmail());
         holder.txtTelefone.setText(contato.getTelefone());
         holder.txtNome.setText(contato.getNome());
+
+        holder.imgFavorito.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                contato.setFavorito(!contato.isFavorito());
+                listener.OnClick(holder.getAdapterPosition(), contato.isFavorito());
+                notifyItemChanged(holder.getAdapterPosition());
+            }
+        });
 
         if(!contato.getFotoPath().isEmpty()){
             Glide.with(context).load(contato.getFotoPath()).into(holder.imgPerfil).onLoadFailed(context.getResources().getDrawable(R.drawable.baseline_image_24));
