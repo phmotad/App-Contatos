@@ -1,4 +1,4 @@
-package br.com.victall.projetoph.model;
+package br.com.victall.projetoph.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,12 +6,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import br.com.victall.projetoph.R;
-import br.com.victall.projetoph.activity.MainActivity;
+import br.com.victall.projetoph.helper.ConfiguracaoFirebase;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -53,6 +52,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void abreTelaCadastro(View view){
-        startActivity(new Intent(this,CadastroActivity.class));
+        startActivity(new Intent(this, CadastroActivity.class));
     }
 }

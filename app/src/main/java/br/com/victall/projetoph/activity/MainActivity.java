@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -32,9 +31,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import br.com.victall.projetoph.R;
-import br.com.victall.projetoph.model.ConfiguracaoFirebase;
+import br.com.victall.projetoph.helper.ConfiguracaoFirebase;
 import br.com.victall.projetoph.model.Contato;
-import br.com.victall.projetoph.model.ContatoAdapter;
+import br.com.victall.projetoph.adapter.ContatoAdapter;
 
 public class MainActivity extends AppCompatActivity implements ContatoAdapter.OnClickListener {
 
@@ -194,6 +193,7 @@ public class MainActivity extends AppCompatActivity implements ContatoAdapter.On
     @Override
     public void OnClick(int posicao, boolean isFavorite) {
         listaTarefas.get(posicao).setFavorito(isFavorite);
-
+        String contatoId = listaTarefas.get(posicao).getId();
+        ConfiguracaoFirebase.atualizaContato(isFavorite,this,contatoId);
     }
 }

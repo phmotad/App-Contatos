@@ -1,4 +1,4 @@
-package br.com.victall.projetoph.model;
+package br.com.victall.projetoph.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 import br.com.victall.projetoph.R;
+import br.com.victall.projetoph.model.Contato;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ContatoAdapter extends RecyclerView.Adapter<ContatoAdapter.ViewHolder> {

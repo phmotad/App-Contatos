@@ -1,4 +1,4 @@
-package br.com.victall.projetoph.model;
+package br.com.victall.projetoph.activity;
 
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +10,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import br.com.victall.projetoph.R;
+import br.com.victall.projetoph.helper.ConfiguracaoFirebase;
+import br.com.victall.projetoph.model.Usuario;
 
 public class CadastroActivity extends AppCompatActivity {
     private EditText editEmail;
