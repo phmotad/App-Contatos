@@ -13,4 +13,18 @@
         <item name="colorButtonNormal">@color/laranja</item>
 
     </style>
+
+    <style name="CustomTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <!-- Cor da borda ao focar -->
+        <item name="boxStrokeColor">#FFC107</item>
+        <!-- Cor do fundo do campo -->
+        <item name="boxBackgroundColor">#333333</item>
+        <!-- Cor do hint quando flutuante -->
+        <item name="hintTextColor">@color/cinzaClaro</item>
+        <!-- Cor da borda ao mostrar erro -->
+        <item name="boxStrokeErrorColor">#D32F2F</item>
+        <!-- Cor do texto -->
+        <item name="android:textColor">@color/branco</item>
+    </style>
+
 </resources>

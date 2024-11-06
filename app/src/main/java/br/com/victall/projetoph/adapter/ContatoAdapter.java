@@ -39,7 +39,7 @@ public class ContatoAdapter extends RecyclerView.Adapter<ContatoAdapter.ViewHold
     }
 
     public interface OnClickListener{
-        void OnClick( int posicao,boolean isFavorite);
+        void OnClick( int posicao,boolean isFavorite,int type);
     }
 
     @Override
@@ -51,11 +51,13 @@ public class ContatoAdapter extends RecyclerView.Adapter<ContatoAdapter.ViewHold
         holder.txtTelefone.setText(contato.getTelefone());
         holder.txtNome.setText(contato.getNome());
 
+        holder.itemView.setOnClickListener(v->listener.OnClick(holder.getAdapterPosition(),true,2));
+
         holder.imgFavorito.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 contato.setFavorito(!contato.isFavorito());
-                listener.OnClick(holder.getAdapterPosition(), contato.isFavorito());
+                listener.OnClick(holder.getAdapterPosition(), contato.isFavorito(),1);
                 notifyItemChanged(holder.getAdapterPosition());
             }
         });

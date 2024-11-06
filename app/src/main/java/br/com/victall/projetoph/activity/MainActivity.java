@@ -191,9 +191,13 @@ public class MainActivity extends AppCompatActivity implements ContatoAdapter.On
     }
 
     @Override
-    public void OnClick(int posicao, boolean isFavorite) {
-        listaTarefas.get(posicao).setFavorito(isFavorite);
-        String contatoId = listaTarefas.get(posicao).getId();
-        ConfiguracaoFirebase.atualizaContato(isFavorite,this,contatoId);
+    public void OnClick(int posicao, boolean isFavorite, int type) {
+        if(type == 1) {
+            listaTarefas.get(posicao).setFavorito(isFavorite);
+            String contatoId = listaTarefas.get(posicao).getId();
+            ConfiguracaoFirebase.atualizaContato(isFavorite,this,contatoId);}
+        else{
+            startActivity(new Intent(this,ContatoActivity.class));
+        }
     }
 }
