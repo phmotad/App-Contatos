@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements ContatoAdapter.On
                 contato.setEmail(edtEmailDialog.getText().toString());
                 contato.setTelefone(edtTelefoneDialog.getText().toString());
                 alertDialog.dismiss(); //Comando para fechar o Dialog
-                ConfiguracaoFirebase.salvarContato(contato, MainActivity.this,uriTemp);
+                ConfiguracaoFirebase.salvarContato(contato, MainActivity.this,uriTemp,false);
             }
         });
         }
@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements ContatoAdapter.On
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                listaTarefas = new ArrayList<>();
+                listaTarefas.clear();
 
                 if(snapshot.exists()){
                     for(DataSnapshot dataSnapshot : snapshot.getChildren()){
@@ -197,7 +197,12 @@ public class MainActivity extends AppCompatActivity implements ContatoAdapter.On
             String contatoId = listaTarefas.get(posicao).getId();
             ConfiguracaoFirebase.atualizaContato(isFavorite,this,contatoId);}
         else{
-            startActivity(new Intent(this,ContatoActivity.class));
+
+            Intent intent = new Intent(this,ContatoActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("contato",listaTarefas.get(posicao));
+            intent.putExtras(bundle);
+            startActivity(intent);
         }
     }
 }

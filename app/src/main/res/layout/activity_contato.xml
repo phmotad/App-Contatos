@@ -20,7 +20,7 @@
         android:layout_marginTop="30dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profilePicture"
+            android:id="@+id/imgEdicao"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/baseline_image_24"
@@ -28,15 +28,14 @@
             />
 
         <ImageView
-            android:id="@+id/editProfilePicture"
+            android:id="@+id/imgEdicao2"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
-            android:src="@drawable/edit_icon"
-            app:tint="@color/branco"
+            android:layout_alignParentBottom="true"
+            android:backgroundTint="@color/laranja"
             android:padding="4dp"
-            />
+            android:src="@drawable/edit_icon" />
     </RelativeLayout>
 
     <!-- Full Name Field -->
@@ -51,7 +50,7 @@
         >
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/fullName"
+            android:id="@+id/edtNomeEdicao"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/icon_user"
@@ -65,14 +64,14 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/fullName"
+        android:layout_below="@id/edtNomeEdicao"
         android:layout_marginHorizontal="24dp"
         android:layout_marginTop="16dp"
         android:hint="Email"
         style="CustomTextInputLayoutStyle">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/email"
+            android:id="@+id/edtEmailEdicao"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/email_icon"
@@ -86,14 +85,14 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/email"
+        android:layout_below="@id/edtEmailEdicao"
         android:layout_marginHorizontal="24dp"
         android:layout_marginTop="16dp"
         android:hint="Telefone"
         style="CustomTextInputLayoutStyle">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/phoneNumber"
+            android:id="@+id/telefoneEdicao"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/phone_icon"
@@ -105,7 +104,7 @@
 
     <!-- Edit Profile Button -->
     <Button
-        android:id="@+id/editProfileButton"
+        android:id="@+id/btnSalvarEdicao"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"

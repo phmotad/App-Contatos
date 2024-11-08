@@ -3,6 +3,7 @@ package br.com.victall.projetoph.helper;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -90,25 +91,40 @@ public class ConfiguracaoFirebase {
         return FirebaseAuth.getInstance().getCurrentUser()!=null;
     }
 
-    public static void salvarContato(Contato contato, Context context, Uri uri){
+    public static void salvarContato(Contato contato, Context context, Uri uri, boolean isUpdate){
+
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        String id = databaseReference.child("contatos").push().getKey();
-        contato.setId(id);
-        if(id==null)
-            return;
-        final StorageReference fotoPerfilRef = FirebaseStorage.getInstance().getReference().child("fotos");
+
+        if(!isUpdate){
+            String id = databaseReference.child("contatos").push().getKey();
+            contato.setId(id);
+            if(id==null)
+                return;
+        }
+
+        final StorageReference fotoPerfilRef = FirebaseStorage.getInstance().getReference().child("fotos").child(contato.getId());
+
+
         //Fazer Upload do Arquivo
         UploadTask uploadTask = fotoPerfilRef.putFile(uri);
+
+
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+
                 fotoPerfilRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
+
+
                         String urlConvertida = uri.toString();
                         contato.setFotoPath(urlConvertida);
-                        databaseReference.child("contatos").child(id).setValue(contato)
+
+
+                        databaseReference.child("contatos").child(contato.getId()).setValue(contato)
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
@@ -123,6 +139,7 @@ public class ConfiguracaoFirebase {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                Log.i("ërrrr",e.getMessage());
             }
         });
     }

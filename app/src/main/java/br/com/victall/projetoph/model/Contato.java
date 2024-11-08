@@ -1,6 +1,8 @@
 package br.com.victall.projetoph.model;
 
-public class Contato {
+import java.io.Serializable;
+
+public class Contato implements Serializable {
     private String nome;
     private String telefone;
     private String email;
