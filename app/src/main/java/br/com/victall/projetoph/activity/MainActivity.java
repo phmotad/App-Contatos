@@ -30,6 +30,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import br.com.victall.projetoph.IGetContato;
 import br.com.victall.projetoph.R;
 import br.com.victall.projetoph.helper.ConfiguracaoFirebase;
 import br.com.victall.projetoph.model.Contato;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements ContatoAdapter.On
     private int SELECT_PICTURE = 200;
     private String pathTemp;
     private Uri uriTemp;
+    private Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements ContatoAdapter.On
         adapter = new ContatoAdapter(listaTarefas,this, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+        recuperaContatos();
     }
         public void adicionaTarefa(View view){
 
@@ -93,7 +96,12 @@ public class MainActivity extends AppCompatActivity implements ContatoAdapter.On
                 contato.setEmail(edtEmailDialog.getText().toString());
                 contato.setTelefone(edtTelefoneDialog.getText().toString());
                 alertDialog.dismiss(); //Comando para fechar o Dialog
-                ConfiguracaoFirebase.salvarContato(contato, MainActivity.this,uriTemp,false);
+                ConfiguracaoFirebase.salvarContato(contato, MainActivity.this, uriTemp, false, new IGetContato() {
+                    @Override
+                    public void sucess(String idUser) {
+                        saveToInternalStorage(idUser);
+                    }
+                });
             }
         });
         }
@@ -117,7 +125,6 @@ public class MainActivity extends AppCompatActivity implements ContatoAdapter.On
                     try {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
                         imgSelected.setImageBitmap(bitmap);
-                        pathTemp = saveToInternalStorage(bitmap);
                         uriTemp = selectedImageUri;
                     } catch (IOException e) {
                         throw new RuntimeException(e);
@@ -128,16 +135,18 @@ public class MainActivity extends AppCompatActivity implements ContatoAdapter.On
         }
     }
 
-    public static String saveToInternalStorage(Bitmap bitmapImage){
+        public String saveToInternalStorage(String idUser){
 
+        File fotosDir = new File("//data//data//br.com.victall.projetoph//fotos//");
+        if(!fotosDir.exists())
+            fotosDir.mkdir();
 
-        File mypath=new File("//data//data//br.com.victall.projetoph//","foto.jpg");
-
+        File mypath = new File("//data//data//br.com.victall.projetoph//fotos//",idUser+".jpg");
 
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(mypath);
-            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -165,13 +174,8 @@ public class MainActivity extends AppCompatActivity implements ContatoAdapter.On
                         Contato contato = dataSnapshot.getValue(Contato.class);
                         listaTarefas.add(contato);
                     }
-
-                    adapter = new ContatoAdapter(listaTarefas,MainActivity.this, MainActivity.this);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-                    recyclerView.setAdapter(adapter);
-                    adapter.notifyDataSetChanged();
-
                 }
+                adapter.notifyDataSetChanged();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -184,7 +188,6 @@ public class MainActivity extends AppCompatActivity implements ContatoAdapter.On
     @Override
     protected void onResume() {
         super.onResume();
-        recuperaContatos();
     }
     public void deslogar(View view){
         ConfiguracaoFirebase.deslogar(this);

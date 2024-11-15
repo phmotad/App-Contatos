@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -20,7 +21,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import br.com.victall.projetoph.IGetContato;
 import br.com.victall.projetoph.R;
+import br.com.victall.projetoph.databinding.ActivityContatoBinding;
 import br.com.victall.projetoph.helper.ConfiguracaoFirebase;
 import br.com.victall.projetoph.model.Contato;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -35,12 +38,15 @@ public class ContatoActivity extends AppCompatActivity {
     private Uri uriTemp;
     private ImageView imgSelected;
     private CircleImageView imgFoto;
-
+    private Contato contato;
+    private ActivityContatoBinding binding;
+    private Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_contato);
+        binding = ActivityContatoBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         edtNome = findViewById(R.id.edtNomeEdicao);
         edtEmail = findViewById(R.id.edtEmailEdicao);
@@ -55,7 +61,7 @@ public class ContatoActivity extends AppCompatActivity {
         edtTelefone.addTextChangedListener(mtw);  // seta o formato no campo texto
 
         if(getIntent().getExtras()!=null){
-            Contato contato = (Contato) getIntent().getExtras().get("contato");
+            contato = (Contato) getIntent().getExtras().get("contato");
             edtNome.setText(contato.getNome());
             edtEmail.setText(contato.getEmail());
             edtTelefone.setText(contato.getTelefone());
@@ -73,10 +79,28 @@ public class ContatoActivity extends AppCompatActivity {
                 contato.setEmail(edtEmail.getText().toString());
                 contato.setTelefone(edtTelefone.getText().toString());
                 contato.setFotoPath(pathTemp);
-                ConfiguracaoFirebase.salvarContato(contato,ContatoActivity.this,uriTemp,true);
-                finish();
+                ConfiguracaoFirebase.salvarContato(contato, ContatoActivity.this, uriTemp, true, new IGetContato() {
+                    @Override
+                    public void sucess(String idUser) {
+                        finish();
+                    }
+                });
             }
         });
+        recuperarImagem();
+        binding.toolbar.include.ibVoltar.setOnClickListener(view -> finish());
+    }
+
+    private void recuperarImagem(){
+        if(contato!=null){
+            if(!contato.getFotoPath().isEmpty()){
+                File file = new File("//data//data//br.com.victall.projetoph//fotos//"+contato.getId()+".jpg");
+                if(file.exists()) {
+                    Bitmap myBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                    imgFoto.setImageBitmap(myBitmap);
+                }
+            }
+        }
     }
 
     private void escolherImagem() {
@@ -96,9 +120,9 @@ public class ContatoActivity extends AppCompatActivity {
                 Uri selectedImageUri = data.getData();
                 if (null != selectedImageUri) {
                     try {
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
+                        bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
                         imgFoto.setImageBitmap(bitmap);
-                        pathTemp = saveToInternalStorage(bitmap);
+                        pathTemp = saveToInternalStorage(contato.getId());
                         uriTemp = selectedImageUri;
                     } catch (IOException e) {
                         throw new RuntimeException(e);
@@ -109,16 +133,18 @@ public class ContatoActivity extends AppCompatActivity {
         }
     }
 
-    public static String saveToInternalStorage(Bitmap bitmapImage){
+    public String saveToInternalStorage(String idUser){
 
+        File fotosDir = new File("//data//data//br.com.victall.projetoph//fotos//");
+        if(!fotosDir.exists())
+            fotosDir.mkdir();
 
-        File mypath=new File("//data//data//br.com.victall.projetoph//","foto.jpg");
-
+        File mypath = new File("//data//data//br.com.victall.projetoph//fotos//",idUser+".jpg");
 
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(mypath);
-            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

@@ -8,6 +8,7 @@
     android:background="#222222">
 
     <include
+        android:id="@+id/toolbar"
         layout="@layout/toolbar_voltar"/>
 
     <!-- Profile Picture -->
@@ -55,9 +56,9 @@
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/icon_user"
             android:drawablePadding="10dp"
+            android:inputType="textPersonName"
             android:padding="12dp"
-            android:textColor="#FFFFFF"
-            android:inputType="textPersonName" />
+            android:textColor="#000000" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Email Field -->
@@ -76,9 +77,9 @@
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/email_icon"
             android:drawablePadding="10dp"
+            android:inputType="textEmailAddress"
             android:padding="12dp"
-            android:textColor="#FFFFFF"
-            android:inputType="textEmailAddress" />
+            android:textColor="#000000" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Phone Number Field -->
@@ -97,9 +98,9 @@
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/phone_icon"
             android:drawablePadding="10dp"
+            android:inputType="phone"
             android:padding="12dp"
-            android:textColor="#FFFFFF"
-            android:inputType="phone" />
+            android:textColor="#000000" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Edit Profile Button -->

@@ -1,6 +1,8 @@
 package br.com.victall.projetoph.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +13,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import br.com.victall.projetoph.R;
@@ -53,6 +61,35 @@ public class ContatoAdapter extends RecyclerView.Adapter<ContatoAdapter.ViewHold
 
         holder.itemView.setOnClickListener(v->listener.OnClick(holder.getAdapterPosition(),true,2));
 
+        File file = new File("//data//data//br.com.victall.projetoph//fotos//"+contato.getId()+".jpg");
+
+
+        StorageReference fotoPerfilRef = FirebaseStorage.getInstance().getReference().child("fotos");
+        String fotoRef150 = contato.getId();
+        StorageReference userImageRef150 = fotoPerfilRef.child(fotoRef150);
+
+        if(file.exists()){
+            Bitmap myBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+            holder.imgPerfil.setImageBitmap(myBitmap);
+        }
+        else if(!contato.getFotoPath().isEmpty()){
+
+            userImageRef150.getFile(file).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+
+                    if(file.exists()&&file.isFile()) {
+                        Bitmap myBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                        holder.imgPerfil.setImageBitmap(myBitmap);
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    holder.imgPerfil.setImageDrawable(context.getDrawable(R.drawable.baseline_image_24));
+                }
+            });
+        }
         holder.imgFavorito.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,10 +98,6 @@ public class ContatoAdapter extends RecyclerView.Adapter<ContatoAdapter.ViewHold
                 notifyItemChanged(holder.getAdapterPosition());
             }
         });
-
-        if(!contato.getFotoPath().isEmpty()){
-            Glide.with(context).load(contato.getFotoPath()).into(holder.imgPerfil).onLoadFailed(context.getResources().getDrawable(R.drawable.baseline_image_24));
-        }
 
         if(contato.isFavorito())
             holder.imgFavorito.setImageResource(R.drawable.baseline_favorite_24);

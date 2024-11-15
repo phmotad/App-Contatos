@@ -21,6 +21,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import br.com.victall.projetoph.IGetContato;
 import br.com.victall.projetoph.activity.LoginActivity;
 import br.com.victall.projetoph.activity.MainActivity;
 import br.com.victall.projetoph.model.Contato;
@@ -91,7 +92,7 @@ public class ConfiguracaoFirebase {
         return FirebaseAuth.getInstance().getCurrentUser()!=null;
     }
 
-    public static void salvarContato(Contato contato, Context context, Uri uri, boolean isUpdate){
+    public static void salvarContato(Contato contato, Context context, Uri uri, boolean isUpdate, IGetContato listener){
 
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -114,7 +115,6 @@ public class ConfiguracaoFirebase {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-
                 fotoPerfilRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
@@ -129,6 +129,7 @@ public class ConfiguracaoFirebase {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if(task.isSuccessful()){
+                                            listener.sucess(contato.getId());
                                             Toast.makeText(context, "Contato salvo com sucesso!", Toast.LENGTH_SHORT).show();
                                         }
                                     }
