@@ -31,11 +31,13 @@ public class ContatoAdapter extends RecyclerView.Adapter<ContatoAdapter.ViewHold
     private ArrayList<Contato> contatoList;
     private Context context;
     private OnClickListener listener;
+    private OnLongClickListener longClickListener;
 
-    public ContatoAdapter(ArrayList<Contato> contatoList, Context context, OnClickListener listener) {
+    public ContatoAdapter(ArrayList<Contato> contatoList, Context context, OnClickListener listener, OnLongClickListener longClickListener){
         this.contatoList = contatoList;
         this.context = context;
         this.listener = listener;
+        this.longClickListener = longClickListener;
     }
 
     @NonNull
@@ -50,6 +52,10 @@ public class ContatoAdapter extends RecyclerView.Adapter<ContatoAdapter.ViewHold
         void OnClick( int posicao,boolean isFavorite,int type);
     }
 
+    public interface OnLongClickListener{
+        boolean OnLongClick(int posicao);
+    }
+
     @Override
     public void onBindViewHolder(@NonNull ContatoAdapter.ViewHolder holder, int position) {
 
@@ -58,8 +64,8 @@ public class ContatoAdapter extends RecyclerView.Adapter<ContatoAdapter.ViewHold
         holder.txtEmail.setText(contato.getEmail());
         holder.txtTelefone.setText(contato.getTelefone());
         holder.txtNome.setText(contato.getNome());
-
         holder.itemView.setOnClickListener(v->listener.OnClick(holder.getAdapterPosition(),true,2));
+        holder.itemView.setOnLongClickListener(v->longClickListener.OnLongClick(holder.getAdapterPosition()));
 
         File file = new File("//data//data//br.com.victall.projetoph//fotos//"+contato.getId()+".jpg");
 

@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.github.rtoshiro.util.format.SimpleMaskFormatter;
 import com.github.rtoshiro.util.format.text.MaskTextWatcher;
@@ -36,7 +38,7 @@ import br.com.victall.projetoph.helper.ConfiguracaoFirebase;
 import br.com.victall.projetoph.model.Contato;
 import br.com.victall.projetoph.adapter.ContatoAdapter;
 
-public class MainActivity extends AppCompatActivity implements ContatoAdapter.OnClickListener {
+public class MainActivity extends AppCompatActivity implements ContatoAdapter.OnClickListener, ContatoAdapter.OnLongClickListener {
 
     private ImageView btnPagPrincipal;
     private ImageView imgSelected;
@@ -56,12 +58,13 @@ public class MainActivity extends AppCompatActivity implements ContatoAdapter.On
         btnPagPrincipal = findViewById(R.id.btnPagPrincipal);
         recyclerView = findViewById(R.id.lstTarefas);
         listaTarefas = new ArrayList<>();
-        adapter = new ContatoAdapter(listaTarefas,this, this);
+        adapter = new ContatoAdapter(listaTarefas,this, this,this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
         recuperaContatos();
     }
-        public void adicionaTarefa(View view){
+
+    public void adicionaTarefa(View view){
 
         //Definido um view para acessar os campos do diálogo
         View dialogView = LayoutInflater.from(this).inflate(R.layout.layout_dialog,null,false);
@@ -90,6 +93,16 @@ public class MainActivity extends AppCompatActivity implements ContatoAdapter.On
             @Override
             public void onClick(View view) {
 
+                if(uriTemp==null){
+                    Toast.makeText(MainActivity.this, "Selecione uma foto!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
+                progressDialog.setMessage("Salvando contato...");
+                progressDialog.setCancelable(false); // Impede que o usuário feche o diálogo manualmente
+                progressDialog.show();
+
                 //Ação do clique do botão salvar
                 Contato contato = new Contato();
                 contato.setNome(edtNomeDialog.getText().toString());
@@ -99,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements ContatoAdapter.On
                 ConfiguracaoFirebase.salvarContato(contato, MainActivity.this, uriTemp, false, new IGetContato() {
                     @Override
                     public void sucess(String idUser) {
+                        progressDialog.dismiss();
                         saveToInternalStorage(idUser);
                     }
                 });
@@ -135,7 +149,10 @@ public class MainActivity extends AppCompatActivity implements ContatoAdapter.On
         }
     }
 
-        public String saveToInternalStorage(String idUser){
+    public String saveToInternalStorage(String idUser){
+
+        if(bitmap==null)
+            return "";
 
         File fotosDir = new File("//data//data//br.com.victall.projetoph//fotos//");
         if(!fotosDir.exists())
@@ -189,6 +206,7 @@ public class MainActivity extends AppCompatActivity implements ContatoAdapter.On
     protected void onResume() {
         super.onResume();
     }
+
     public void deslogar(View view){
         ConfiguracaoFirebase.deslogar(this);
     }
@@ -208,4 +226,30 @@ public class MainActivity extends AppCompatActivity implements ContatoAdapter.On
             startActivity(intent);
         }
     }
+
+    @Override
+    public boolean OnLongClick(int posicao) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        String contactName = listaTarefas.get(posicao).getNome();
+        builder.setTitle("Apagar Contato");
+        builder.setMessage("Você tem certeza que deseja apagar o contato: " + contactName + "?");
+        builder.setPositiveButton("Sim", (dialog, which) -> {
+
+            ConfiguracaoFirebase.deletarContato(this, listaTarefas.get(posicao).getId(), new IGetContato() {
+                @Override
+                public void sucess(String idUser) {
+                  //  listaTarefas.remove(posicao);
+                    adapter.notifyDataSetChanged();
+                    dialog.dismiss();
+                }
+            });
+        });
+        builder.setNegativeButton("Não", (dialog, which) -> {
+            dialog.dismiss();
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        return true;
+    }
+
 }
