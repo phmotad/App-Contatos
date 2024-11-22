@@ -2,14 +2,25 @@
     <!-- Base application theme. -->
     <style name="Theme.temaPh" parent="Theme.Material3.DayNight.NoActionBar">
 
-        <item name="colorPrimary">@color/cinzaClaro</item>
+        <item name="colorPrimary">@color/azulEscuro</item>
         <item name="colorSecondary">@color/azulEscuro</item>
         <item name="colorAccent">@color/laranja</item>
         <item name="android:statusBarColor">@color/azulEscuro</item>
-        <item name="android:backgroundTint">@color/branco</item>
+        <item name="android:backgroundTint">@color/cinzaClaro</item>
         <item name="colorOnBackground">@color/branco</item>
         <item name="colorButtonNormal">@color/laranja</item>
 
     </style>
 
+    <!-- Tema para a Splash Screen -->
+    <style name="SplashScreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Ocultar a barra de status (notificação) -->
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item> <!-- Opcional: tornar a barra de status transparente -->
+        <item name="android:windowTranslucentStatus">true</item> <!-- Opcional: se quiser uma transição suave -->
+    </style>
+
+    
+    
 </resources>

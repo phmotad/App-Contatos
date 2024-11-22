@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/cinzaClaro">
 
     <EditText
         android:id="@+id/edtNomeDialog"
@@ -15,7 +16,9 @@
         android:layout_marginEnd="40dp"
         android:ems="10"
         android:hint="Nome"
-        android:inputType="text" />
+        android:inputType="text"
+        android:textColor="@color/azulEscuro"
+        android:textColorHint="@color/laranja"/>
 
     <EditText
         android:id="@+id/edtEmailDialog"
@@ -26,7 +29,9 @@
         android:layout_marginEnd="40dp"
         android:ems="10"
         android:hint="E-mail"
-        android:inputType="textEmailAddress" />
+        android:textColor="@color/azulEscuro"
+        android:inputType="textEmailAddress"
+        android:textColorHint="@color/laranja"/>
 
     <EditText
         android:id="@+id/edtTelefoneDialog"
@@ -38,7 +43,9 @@
         android:layout_weight="1"
         android:ems="10"
         android:hint="Telefone"
-        android:inputType="phone" />
+        android:textColor="@color/azulEscuro"
+        android:inputType="phone"
+        android:textColorHint="@color/laranja"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -55,6 +62,7 @@
             android:layout_marginStart="40dp"
             android:layout_marginEnd="40dp"
             android:layout_weight="5"
+            android:textColorHint="@color/azulEscuro"
             android:text="Selecionar foto"
             android:textAlignment="textEnd" />
 
@@ -82,6 +90,7 @@
         android:layout_marginBottom="20dp"
         android:backgroundTint="@color/laranja"
         android:text="Salvar"
+        android:textColor="@color/branco"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -5,7 +5,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="horizontal"
-    android:layout_height="100dp">
+    android:layout_height="100dp"
+    android:background="@color/branco"
+    android:elevation="4dp"
+    android:layout_margin="3dp"
+    android:layout_marginRight="3dp"
+    android:layout_marginLeft="3dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -21,7 +26,8 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+>
 
         <TextView
             android:id="@+id/txtNomeContato"
